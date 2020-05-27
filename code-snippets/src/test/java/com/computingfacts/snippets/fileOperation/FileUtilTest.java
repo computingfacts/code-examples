@@ -7,10 +7,9 @@ import static java.util.Collections.singletonList;
 import java.util.List;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasSize;
-import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 /**
@@ -73,13 +72,14 @@ public class FileUtilTest {
 
         //list all files
         List<Path> dirs = FileUtil.listFiles(dev);
-     
-         assertThat(dirs, hasSize(3));
+
+        assertThat(dirs, hasSize(3));
+
         List<Path> subDirs = FileUtil.listFilesAndDirs(dev);
 
         assertThat(subDirs, hasSize(6));
         assertThat(subDirs, hasItem(subDir));
-        
+
         assertTrue(subDirs.size() > dirs.size());
 
         //move files and dir
@@ -89,9 +89,8 @@ public class FileUtilTest {
                 () -> assertTrue(Files.notExists(dev)));
 
         assertLinesMatch(singletonList("This is a readme file"),
-                        Files.readAllLines(prod.resolve("README.md")));
+                Files.readAllLines(prod.resolve("README.md")));
 
-     
         //delete files and dir
         FileUtil.deleteFilesAndLinks(tempDir);
 

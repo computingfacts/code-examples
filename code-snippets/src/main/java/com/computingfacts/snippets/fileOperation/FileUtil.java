@@ -15,14 +15,11 @@ import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
-import java.util.Collection;
 import java.util.Collections;
 import static java.util.Collections.singletonList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -42,13 +39,12 @@ public final class FileUtil {
 
     }
 
-    public static Path createDirectoriesWithPermission(Path directories, String permission) throws IOException {
+    public static void createDirectoriesWithPermission(Path directories, String permission) throws IOException {
         if (Objects.isNull(permission)) {
             permission = DEFAULT_PERMISSION;
         }
         FileAttribute<Set<PosixFilePermission>> attr = fileAttributes(permission);
-
-        return Files.createDirectories(directories, attr);
+        Files.createDirectories(directories, attr);
     }
 
     //Filtering a Directory Listing By Using Globbing
