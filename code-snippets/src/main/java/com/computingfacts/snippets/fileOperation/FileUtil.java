@@ -15,7 +15,6 @@ import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
-import java.util.Collections;
 import static java.util.Collections.singletonList;
 import java.util.List;
 import java.util.Objects;
@@ -59,7 +58,7 @@ public final class FileUtil {
         } catch (IOException | DirectoryIteratorException x) {
             log.error(x.getMessage());
         }
-        return Collections.EMPTY_LIST;
+        return List.of();
     }
 
     public static List<Path> listFiles(Path pathToDir) {
@@ -70,7 +69,7 @@ public final class FileUtil {
         } catch (IOException ex) {
             log.error(ex.getMessage());
         }
-        return Collections.EMPTY_LIST;
+        return List.of();
     }
 
     public static List<Path> listFilesAndDirs(Path dir) {
@@ -81,7 +80,7 @@ public final class FileUtil {
         } catch (IOException ex) {
             log.error(ex.getMessage());
         }
-        return Collections.EMPTY_LIST;
+        return List.of();
     }
 
     public static File createRegularFile(Path path) throws IOException {

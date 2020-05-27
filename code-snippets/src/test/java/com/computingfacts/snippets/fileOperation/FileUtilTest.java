@@ -1,6 +1,7 @@
 package com.computingfacts.snippets.fileOperation;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import static java.util.Collections.singletonList;
@@ -22,10 +23,10 @@ public class FileUtilTest {
      * Test of all methods, of class FileUtil.
      *
      * @param tempDir
-     * @throws java.lang.Exception
+     * @throws java.io.IOException
      */
     @Test
-    public void testFileUtilMethods(@TempDir Path tempDir) throws Exception {
+    public void testFileUtilMethods(@TempDir Path tempDir) throws IOException {
 
         Path dev = tempDir.resolve("dev");
         Path prod = tempDir.resolve("prod");
