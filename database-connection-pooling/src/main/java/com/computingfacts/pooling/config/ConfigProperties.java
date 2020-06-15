@@ -17,7 +17,7 @@ public class ConfigProperties {
     private String username;
     private String password;
     @Autowired
-    Environment env;
+    private Environment env;
 
     public String getUrl() {
         url = env.getProperty("spring.datasource.url");

@@ -6,6 +6,7 @@ import com.computingfacts.pooling.service.ApplicationOperationImpl;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import com.zaxxer.hikari.HikariDataSource;
 import java.sql.SQLException;
+import java.util.Arrays;
 import javax.sql.DataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.dbcp2.BasicDataSource;
@@ -13,39 +14,59 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 /**
  *
  * @author joseph
  */
+@ActiveProfiles("dbcp2")
 @Slf4j
-@SpringJUnitConfig({ApplicationOperationImpl.class, ConfigProperties.class, PoolConfig.class})
+@SpringJUnitConfig({ApacheDbcp2Config.class, Cp30Config.class, HikaricpConfig.class, TomcatConfig.class, ApplicationOperationImpl.class, ConfigProperties.class})
 public class DatabaseConnectionPoolTest {
 
     @Autowired
-    private DataSource dataSourceHikariCP;
+    private DataSource dataSource;
     @Autowired
-    private DataSource dataSourceDBCP;
+    private Environment env;
     @Autowired
-    private DataSource dataSourceCp30;
-    @Autowired
-    private DataSource dataSourceTomcatJdbc;
+    private ConfigProperties configProperties;
 
     @Autowired
     private ApplicationOperation operation;
 
     @Test
     void injectedComponentsAreNotNull() {
-        assertThat(dataSourceHikariCP).isNotNull();
-        assertThat(dataSourceDBCP).isNotNull();
-        assertThat(dataSourceCp30).isNotNull();
-        assertThat(dataSourceTomcatJdbc).isNotNull();
+        assertThat(dataSource).isNotNull();
+        assertThat(configProperties).isNotNull();
+        assertThat(env).isNotNull();
 
-        assertThat(dataSourceHikariCP).isInstanceOf(HikariDataSource.class);
-        assertThat(dataSourceDBCP).isInstanceOf(BasicDataSource.class);
-        assertThat(dataSourceCp30).isInstanceOf(ComboPooledDataSource.class);
-        assertThat(dataSourceTomcatJdbc).isInstanceOf(org.apache.tomcat.jdbc.pool.DataSource.class);
+        String activeProfile = Arrays.asList(env.getActiveProfiles())
+                .stream()
+                .findFirst()
+                .orElse("hikaricp");
+
+        if (activeProfile.equals("hikaricp")) {
+            assertThat(dataSource).isInstanceOf(HikariDataSource.class);
+
+        }
+        if (activeProfile.equals("cp30")) {
+
+            assertThat(dataSource).isInstanceOf(ComboPooledDataSource.class);
+
+        }
+        if (activeProfile.equals("tomcat")) {
+
+            assertThat(dataSource).isInstanceOf(org.apache.tomcat.jdbc.pool.DataSource.class);
+
+        }
+        if (activeProfile.equals("dbcp2")) {
+
+            assertThat(dataSource).isInstanceOf(BasicDataSource.class);
+
+        }
 
     }
 
@@ -59,15 +80,9 @@ public class DatabaseConnectionPoolTest {
 
         assertThat(operation).isNotNull();
 
-        assertTrue(dataSourceHikariCP.getConnection().isValid(1));
-        assertTrue(dataSourceDBCP.getConnection().isValid(1));
-        assertTrue(dataSourceCp30.getConnection().isValid(1));
-        assertTrue(dataSourceTomcatJdbc.getConnection().isValid(1));
+        assertTrue(dataSource.getConnection().isValid(1));
 
-        operation.doSomething(dataSourceHikariCP.getConnection(), false);
-        operation.doSomething(dataSourceDBCP.getConnection(), false);
-        operation.doSomething(dataSourceCp30.getConnection(), false);
-        operation.doSomething(dataSourceTomcatJdbc.getConnection(), true);
+        operation.doSomething(true);
 
     }
 }

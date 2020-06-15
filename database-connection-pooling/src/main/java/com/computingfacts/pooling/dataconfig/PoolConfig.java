@@ -27,6 +27,7 @@ public class PoolConfig {
         pooledDataSource.setJdbcUrl(configProperties.getUrl());
         pooledDataSource.setUser(configProperties.getUsername());
         pooledDataSource.setPassword(configProperties.getPassword());
+        pooledDataSource.setMinPoolSize(2);
         return pooledDataSource;
     }
 
@@ -42,7 +43,6 @@ public class PoolConfig {
         return dbcpDataSource;
     }
 
-    // @Primary
     @Bean(name = "dataSourceHikariCP")
     public DataSource dataSourceHikariCP() {
 

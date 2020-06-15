@@ -24,10 +24,7 @@ public class ConnectionPoolingApplication {
 
         ApplicationOperation service = context.getBean(ApplicationOperation.class);
 
-        service.doSomething(pool.dataSourceCp30().getConnection(), true);
-        service.doSomething(pool.dataSourceDBCP().getConnection(), true);
-        service.doSomething(pool.dataSourceHikariCP().getConnection(), true);
-        service.doSomething(pool.dataSourceTomcatJdbc().getConnection(), true);
+        service.doSomething(true);
 
     }
 
