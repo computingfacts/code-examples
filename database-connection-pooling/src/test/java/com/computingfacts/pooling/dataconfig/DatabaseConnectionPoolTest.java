@@ -10,6 +10,7 @@ import javax.sql.DataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.dbcp2.BasicDataSource;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
@@ -57,6 +58,11 @@ public class DatabaseConnectionPoolTest {
     public void testDoSomething() throws SQLException {
 
         assertThat(operation).isNotNull();
+
+        assertTrue(dataSourceHikariCP.getConnection().isValid(1));
+        assertTrue(dataSourceDBCP.getConnection().isValid(1));
+        assertTrue(dataSourceCp30.getConnection().isValid(1));
+        assertTrue(dataSourceTomcatJdbc.getConnection().isValid(1));
 
         operation.doSomething(dataSourceHikariCP.getConnection(), false);
         operation.doSomething(dataSourceDBCP.getConnection(), false);
