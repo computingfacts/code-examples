@@ -86,7 +86,8 @@ public class EnzymeController {
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Enzyme with ec=%s not found", ec)));
 
     }
-    
+
+
 
     @GetMapping(value = "/{ec}/proteins")
     public ResponseEntity<Collection<ProteinModel>> findAssociatedProteinsByEcNumber(@Parameter(description = "a valid EC number.", required = true) @PathVariable("ec") String ec, @Parameter(description = " result limit") @RequestParam(value = "limit", defaultValue = "10") int limit) {
