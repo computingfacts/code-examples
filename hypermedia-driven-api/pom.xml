@@ -41,11 +41,11 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <dependency>
+<!--        <dependency>
             <groupId>com.toedter</groupId>
             <artifactId>spring-hateoas-jsonapi</artifactId>
             <version>0.7.0</version>
-        </dependency>
+        </dependency>-->
 
         <dependency>
             <groupId>javax.persistence</groupId>
