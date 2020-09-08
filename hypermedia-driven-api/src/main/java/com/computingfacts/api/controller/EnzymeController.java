@@ -46,7 +46,7 @@ import uk.ac.ebi.ep.indexservice.model.enzyme.EnzymeEntry;
  */
 @Slf4j
 @Tag(name = "Enzyme Entry", description = "Search enzyme by valid complete EC number")
-@RequestMapping(value = "/enzymes", produces = {"application/vnd.api+json", MediaType.APPLICATION_JSON_VALUE, MediaTypes.HAL_JSON_VALUE})
+@RequestMapping(value = "/enzymes", produces = { MediaType.APPLICATION_JSON_VALUE, MediaTypes.HAL_JSON_VALUE})
 @RestController
 public class EnzymeController {
 
