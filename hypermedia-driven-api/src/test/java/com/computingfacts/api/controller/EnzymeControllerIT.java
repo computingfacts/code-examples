@@ -17,6 +17,7 @@ import org.springframework.hateoas.Link;
 import org.springframework.hateoas.LinkRelation;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.PagedModel;
+import static org.springframework.hateoas.client.Hop.rel;
 import org.springframework.hateoas.client.Traverson;
 import org.springframework.hateoas.server.core.TypeReferences;
 
@@ -61,12 +62,17 @@ public class EnzymeControllerIT {
         assertTrue(enzymeModel.hasLink(LinkRelation.of("enzymes")));
         assertTrue(enzymeModel.hasLink("associated Proteins"));
 
-        String proteinsHref = "/enzymes/{ec}/proteins{?limit}";
-        Link proteinLink = Link.of(proteinsHref);
+        //enzymes link
+        PagedModel<EnzymeModel> enzymes = client
+                .follow("enzymes")
+                .toObject(new TypeReferences.PagedModelType<EnzymeModel>() {
+                });
 
-        assertThat(proteinLink.isTemplated()).isTrue();
-        assertThat(proteinLink.getVariableNames()).contains("ec", "limit");
+        assertNotNull(enzymes);
+        assertNotNull(enzymes.getMetadata());
+        assertThat(enzymes.getMetadata().getSize()).isEqualTo(10L);
 
+        //associated protein link
         CollectionModel<ProteinModel> proteins = traverson.follow("associated Proteins")
                 .toObject(new TypeReferences.CollectionModelType<ProteinModel>() {
                 });
@@ -79,7 +85,8 @@ public class EnzymeControllerIT {
 
     }
 
-    @Test
+
+     @Test
     public void testEnzymes() {
         String endPoint = "enzymes/";
         Traverson traverson = getTraversonClient(endPoint);
@@ -111,6 +118,37 @@ public class EnzymeControllerIT {
         assertThat(enzymeNames).hasSizeGreaterThanOrEqualTo(10);
         assertThat(associatedProteinsAccession).hasSizeGreaterThanOrEqualTo(2);
 
+    }
+
+     @Test
+    public void testFindAssociatedProteinsByEcNumber() {
+
+        String ec = "1.1.1.1";
+        int limit = 10;
+        String endPoint = "enzymes/" + ec + "/proteins?limit=" + limit;
+        Traverson traverson = getTraversonClient(endPoint);
+
+        Traverson.TraversalBuilder client = traverson.follow(IanaLinkRelations.SELF.value());
+
+        TypeReferences.CollectionModelType<ProteinModel> collectionModelType = new TypeReferences.CollectionModelType<ProteinModel>() {
+        };
+
+        CollectionModel<ProteinModel> proteinModel = traverson.
+                follow(rel(IanaLinkRelations.SELF.value())).
+                toObject(collectionModelType);
+
+        assertTrue(proteinModel.hasLink(IanaLinkRelations.SELF));
+
+        List<String> accessions = client.toObject("$._embedded.proteins.[*].accession");
+
+        assertThat(accessions).hasSizeGreaterThanOrEqualTo(2);
+        
+                //templated
+        String proteinsHref = "/enzymes/{ec}/proteins{?limit}";
+        Link proteinLink = Link.of(proteinsHref);
+
+        assertThat(proteinLink.isTemplated()).isTrue();
+        assertThat(proteinLink.getVariableNames()).contains("ec", "limit");
     }
 
 }
