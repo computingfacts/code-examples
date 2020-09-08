@@ -17,7 +17,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
 import javax.validation.constraints.PositiveOrZero;
@@ -29,8 +28,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.PagedModel;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,7 +48,7 @@ import uk.ac.ebi.ep.indexservice.model.enzyme.EnzymeEntry;
  */
 @Slf4j
 @Tag(name = "Enzyme Entry", description = "Search enzyme by valid complete EC number")
-@RequestMapping(value = "/enzymes", produces = { MediaType.APPLICATION_JSON_VALUE, MediaTypes.HAL_JSON_VALUE})
+@RequestMapping(value = "/enzymes", produces = {MediaType.APPLICATION_JSON_VALUE, MediaTypes.HAL_JSON_VALUE})
 @RestController
 public class EnzymeController {
 
@@ -67,7 +69,7 @@ public class EnzymeController {
     }
 
     @GetMapping(value = "/")
-    public PagedModel<EnzymeModel> enzymes(@Parameter(description = "page number") @RequestParam(value = "page", defaultValue = "0", name = "page") int page, @Parameter(description = " result limit") @RequestParam(value = "size", defaultValue = "10") int size) {
+    public PagedModel<EnzymeModel> enzymes(@Parameter(description = "page number") @RequestParam(value = "page", defaultValue = "0", name = "page") int page, @Parameter(description = " result limit") @RequestParam(value = "size", defaultValue = "10",name = "size") int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "ecNumber");
         Page<EnzymeEntry> enzymes = enzymeService.getEnzymeEntries(pageable);
         return pagedResourcesAssembler.toModel(enzymes, paginationModelAssembler);
@@ -88,11 +90,10 @@ public class EnzymeController {
     }
 
 
-
     @GetMapping(value = "/{ec}/proteins")
-    public ResponseEntity<Collection<ProteinModel>> findAssociatedProteinsByEcNumber(@Parameter(description = "a valid EC number.", required = true) @PathVariable("ec") String ec, @Parameter(description = " result limit") @RequestParam(value = "limit", defaultValue = "10") int limit) {
-
-        return ResponseEntity.ok(proteinModelAssembler.toCollectionModel(enzymeService.getProteinsByEc(ec, limit)).getContent());
+    public ResponseEntity<CollectionModel<ProteinModel>> findAssociatedProteinsByEcNumber(@Parameter(description = "a valid EC number.", required = true) @PathVariable("ec") String ec, @Parameter(description = " result limit") @RequestParam(value = "limit", defaultValue = "10") int limit) {
+        Link selfLink = linkTo(methodOn(EnzymeController.class).findAssociatedProteinsByEcNumber(ec, limit)).withSelfRel();
+        return ResponseEntity.ok(proteinModelAssembler.toCollectionModel(enzymeService.getProteinsByEc(ec, limit)).add(selfLink));
     }
 
     @Hidden

@@ -29,6 +29,11 @@
             <version>0.0.4</version>  
         </dependency>
         <dependency>
+            <groupId>uk.ac.ebi.ep</groupId>
+            <artifactId>data-service</artifactId>
+            <version>0.0.2-SNAPSHOT</version> <!-- NB. private repository.-->
+        </dependency> 
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-rest</artifactId>
         </dependency>
@@ -41,7 +46,7 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-<!--        <dependency>
+        <!--        <dependency>
             <groupId>com.toedter</groupId>
             <artifactId>spring-hateoas-jsonapi</artifactId>
             <version>0.7.0</version>
