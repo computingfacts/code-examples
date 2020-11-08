@@ -3,10 +3,11 @@ package uk.gov.dwp.dwpservice.service;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import org.springframework.boot.test.context.SpringBootTest;
 import reactor.core.publisher.Flux;
@@ -46,7 +47,7 @@ public class ResidenceServiceTest {
         when(residenceService.findUserById(userId)).thenReturn(expectedUser);
         Mono<User> userWithId = residenceService.findUserById(userId);
 
-        assertThat(userWithId).isNotNull();
+        assertNotNull(userWithId);
         assertTrue(userWithId.hasElement().block());
     }
 
@@ -65,7 +66,8 @@ public class ResidenceServiceTest {
                .publishOn(Schedulers.boundedElastic())
                 .collectList()
                 .block();
-        assertTrue(!u.isEmpty());
+        assertNotNull(u);
+        assertFalse(u.isEmpty());
         assertThat(u).hasSizeGreaterThanOrEqualTo(1);
 
 

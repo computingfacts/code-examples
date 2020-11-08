@@ -72,7 +72,7 @@ public class ResidenceControllerTest {
      * Test of londoners method, of class ResidenceController.
      */
     @Test
-    void testLondoners() throws Exception {
+    void testLondoners()  {
 
 
         Mockito.when(residenceService.findPeopleInCityAndSurroundings(CITY, LAT, LON, RADIUS)).thenReturn(users);
@@ -94,7 +94,7 @@ public class ResidenceControllerTest {
      * Test of londonArea method, of class ResidenceController.
      */
     @Test
-    void testLondonArea() throws Exception {
+    void testLondonArea()  {
 
         Mockito.when(residenceService.findPeopleInCityAndSurroundings(CITY, LAT, LON, RADIUS)).thenReturn(users);
 

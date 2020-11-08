@@ -20,11 +20,14 @@ public class ClientApplicationRunner implements CommandLineRunner {
     private static final double LAT = 51.509865;
     private static final double LON = -0.118092;
     private static final int RADIUS = 10;
-    @Autowired
-    private ResidenceService residenceService;
+    private final ResidenceService residenceService;
+
+    public ClientApplicationRunner(ResidenceService residenceService) {
+        this.residenceService = residenceService;
+    }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args)  {
 
         Flux<User> users = residenceService.findPeopleInCityAndSurroundings(CITY, LAT, LON, RADIUS);
         users.doOnNext(people -> log.info("People in London Area :   " + people))

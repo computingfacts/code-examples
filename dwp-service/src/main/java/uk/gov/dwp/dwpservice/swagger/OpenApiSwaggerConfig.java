@@ -6,6 +6,8 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.servers.Server;
 import java.util.Arrays;
+import java.util.Collections;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -47,7 +49,8 @@ public class OpenApiSwaggerConfig {
                         .termsOfService(properties.getApiTos())
                         .license(license)
                         .contact(contact))
-                .servers(Arrays.asList(server));
+                .servers(Collections.singletonList(server));
+
     }
 
 }

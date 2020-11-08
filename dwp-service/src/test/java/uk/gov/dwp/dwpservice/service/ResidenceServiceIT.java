@@ -29,7 +29,7 @@ public class ResidenceServiceIT {
     private static final String CITY = "London";
     private static final double LAT = 51.509865;
     private static final double LON = -0.118092;
-    private static final int RADIUS = 50;
+    private static final int RADIUS = 12;
 
     private static final User EXPECTED_USER = User.builder()
             .id(135)
@@ -106,6 +106,7 @@ public class ResidenceServiceIT {
      * Test of peopleInLondonAndSurroundings method, of class
      * ResidenceServiceImpl.
      */
+    @Test
     public void testPeopleInLondonAndSurroundings() {
         log.info("testPeopleInLondonAndSurroundings");
 
@@ -117,13 +118,13 @@ public class ResidenceServiceIT {
 
         Flux<User> londoners = residenceService.findPeopleInCityAndSurroundings(CITY, LAT, LON, RADIUS);
 
+        assertNotNull(expectedUsers);
         StepVerifier
                 .create(londoners)
                 .expectNextMatches(expectedUsers::contains)
                 .expectNextMatches(expectedUsers::contains)
                 .expectNextCount(4)
                 .verifyComplete();
-
         StepVerifier
                 .create(londoners)
                 .assertNext(result -> assertThat(result)

@@ -1,7 +1,5 @@
 package uk.gov.dwp.dwpservice.service;
 
-import java.net.URI;
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.text.WordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -13,6 +11,8 @@ import reactor.core.publisher.Mono;
 import uk.gov.dwp.dwpservice.config.ApiProperties;
 import uk.gov.dwp.dwpservice.model.User;
 import uk.gov.dwp.dwpservice.util.GeoUtil;
+
+import java.net.URI;
 
 /**
  *
@@ -37,7 +37,7 @@ class ResidenceServiceImpl implements ResidenceService {
     @Override
     public Flux<User> findUsers() {
         String url = String.format("%s%s", apiProperties.getBaseUrl(), USERS_ENDPOINT);
-        return getReactiveApi(url, User.class)
+        return getReactiveApi(url)
                 .flatMap(user -> findUserById(user.getId()));
     }
 
@@ -70,7 +70,7 @@ class ResidenceServiceImpl implements ResidenceService {
         String cityName = WordUtils.capitalizeFully(city);
         String url = String.format("%s%s%s/users", apiProperties.getBaseUrl(), CITY_ENDPOINT, cityName);
 
-        return getReactiveApi(url, User.class);
+        return getReactiveApi(url);
 
     }
 
@@ -81,16 +81,16 @@ class ResidenceServiceImpl implements ResidenceService {
 
     private Flux<User> users() {
         String url = String.format("%s%s", apiProperties.getBaseUrl(), USERS_ENDPOINT);
-        return getReactiveApi(url, User.class);
+        return getReactiveApi(url);
 
     }
 
-    private <T> Flux<T> getReactiveApi(String url, Class<T> resultType) {
+    private Flux<User> getReactiveApi(String url) {
         return webClient.get()
                 .uri(buildURI(url))
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
-                .flatMapMany(response -> response.bodyToFlux(resultType))
+                .flatMapMany(response -> response.bodyToFlux(User.class))
                 .switchIfEmpty(Flux.empty());
     }
 

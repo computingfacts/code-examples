@@ -14,14 +14,15 @@ public final class GeoUtil {
     private GeoUtil() {
     }
 
+
     /**
      *
-     * @param  latitude1
-     * @param  latitude2
-     * @param  longitude1
-     * @param  longitude2
+     * @param latitude1
+     * @param latitude2
+     * @param longitude1
+     * @param longitude2
      * @param radius radius in miles
-     * @return true is the distance is <= given radius in miles
+     * @return true if the distance is <= given radius in miles
      */
     public static boolean isWithinCoordinates(double latitude1, double latitude2, double longitude1, double longitude2, int radius) {
 

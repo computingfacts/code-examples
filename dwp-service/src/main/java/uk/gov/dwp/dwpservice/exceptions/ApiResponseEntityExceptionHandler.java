@@ -58,7 +58,7 @@ public class ApiResponseEntityExceptionHandler {
     
         @ExceptionHandler(HttpMediaTypeNotAcceptableException.class)
     @ResponseStatus(code = HttpStatus.NOT_ACCEPTABLE)
-    public ResponseEntity<ExceptionDescriptor> httpMediaTypeNotSupportedHandler(HttpMediaTypeNotAcceptableException ex) {
+    public ResponseEntity httpMediaTypeNotSupportedHandler(HttpMediaTypeNotAcceptableException ex) {
       
         String acceptable = "Acceptable Media types: " + MediaType.toString(ex.getSupportedMediaTypes());
 
@@ -71,7 +71,7 @@ public class ApiResponseEntityExceptionHandler {
 
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
     @ResponseStatus(code = HttpStatus.UNSUPPORTED_MEDIA_TYPE)
-    public ResponseEntity<ExceptionDescriptor> httpMediaTypeNotSupportedHandler(HttpMediaTypeNotSupportedException ex) {
+    public ResponseEntity httpMediaTypeNotSupportedHandler(HttpMediaTypeNotSupportedException ex) {
         String unsupported = "Unsupported content type: " + ex.getContentType();
         String supported = "Supported content types: " + MediaType.toString(ex.getSupportedMediaTypes());
 
@@ -84,7 +84,7 @@ public class ApiResponseEntityExceptionHandler {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ExceptionDescriptor> httpMessageNotReadableHandler(HttpMessageNotReadableException ex) {
+    public ResponseEntity httpMessageNotReadableHandler(HttpMessageNotReadableException ex) {
         ExceptionDescriptor descriptor = ExceptionDescriptor.builder()
                 .description(ex.getMessage())
                 .timestamp(LocalDateTime.now())
@@ -94,7 +94,7 @@ public class ApiResponseEntityExceptionHandler {
 
     @ExceptionHandler(Throwable.class)
     @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
-    public ResponseEntity<ExceptionDescriptor> internalServerErrorHandler(final Throwable e) {
+    public ResponseEntity internalServerErrorHandler(final Throwable e) {
 
         String message = "API internal server problem.";
 
