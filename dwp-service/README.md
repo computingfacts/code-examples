@@ -14,9 +14,12 @@ Maven:
 ```sh
 $ mvn clean package or ./mvnw clean package
 ```
-
 ```sh
 $ mvn spring-boot:run
+```
+Docker :
+```sh
+$ docker build <...>
 ```
 ### Hint
 There is a <code>CommandLineRunner</code> class that logs people from London and surrounding area. The latitude and longitude seems not very accurate for london and other cities but i understand that this is only for demostration purpose only.
@@ -24,8 +27,10 @@ There is a <code>CommandLineRunner</code> class that logs people from London and
 ### Result
 Please see the swagger endpoint or application url to view a list of people who are listed as either living in London, or whose current coordinates are within 50 miles of London.
 - base url http://localhost:8080/dwp/api/
+  - curl -X GET "http://localhost:8080/dwp/api/" -H  "accept: application/json"
 - http://localhost:8080/dwp/api/search - this accepts city name, latitude, longitude & radius
-- http://localhost:8080/dwp/api/ui - swagger 
+  - example http://localhost:8080/dwp/api/search?city=London&lat=51.509865&lon=-0.118092&radius=10
+- http://localhost:8080/dwp/api/ui - swagger UI
 
 ### Sanple result
 ```sh
@@ -50,10 +55,6 @@ Please see the swagger endpoint or application url to view a list of people who 
     "city": "London"
   },
 ```
-
-I'm very much open to feedback and how we can improve this solution. 
-
-Thanks for your time.
 
 License
 ----
