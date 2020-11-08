@@ -17,23 +17,6 @@
             <pattern>%date %level [%thread] %logger{10} [%file:%line] %msg%n</pattern>
         </encoder>
     </appender>
-    
-
-<!--    <appender name="logFile" class="ch.qos.logback.core.FileAppender">
-        <file>log/index-json.log</file>
-
-        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
-            <layout class="ch.qos.logback.contrib.json.classic.JsonLayout">
-                <jsonFormatter
-                    class="ch.qos.logback.contrib.jackson.JacksonJsonFormatter">
-                    <prettyPrint>true</prettyPrint>
-                </jsonFormatter>
-                <timestampFormat>yyyy-MM-dd' 'HH:mm:ss.SSS</timestampFormat>
-            </layout>
-        </encoder>
-    </appender>-->
- 
-
 
     <root level="info">
         <appender-ref ref="STDOUT" />

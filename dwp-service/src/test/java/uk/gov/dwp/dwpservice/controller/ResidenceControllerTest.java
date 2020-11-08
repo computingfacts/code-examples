@@ -25,7 +25,7 @@ import uk.gov.dwp.dwpservice.service.ResidenceService;
 @Slf4j
 @Import(ApiProperties.class)
 @WebFluxTest(controllers = ResidenceController.class)
-public class ResidenceControllerIT {
+public class ResidenceControllerTest {
 
     private static final String CITY = "London";
     private static final double LAT = 51.509865;
