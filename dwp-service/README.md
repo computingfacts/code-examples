@@ -3,7 +3,7 @@
 ### Task
 Build an API which calls this API, and returns people who are listed as either living in London, or whose current coordinates are within 50 miles of London. Push the answer to Github, and send us a link.
 
-This is a Spring Boot application for the DWP interview. This demo app was developed using the following tools
+This is a Spring Boot application for the Department for Work and Pensions (DWP) interview. This demo app was developed using the following;
 
   - Maven
   - Java 8
@@ -19,10 +19,10 @@ $ mvn spring-boot:run
 ```
 Docker :
 ```sh
-$ docker build <...>
+$ docker build < -t tagname etc. .>
 ```
-### Hint
-There is a <code>CommandLineRunner</code> class that logs people from London and surrounding area. The latitude and longitude seems not very accurate for london and other cities but i understand that this is only for demostration purpose only.
+### Note
+There is a <code>CommandLineRunner</code> class that list people from London and surrounding area in a log file (dwp.log). The demo data contain latitude and longitude that seems not very accurate for london and other cities. 
 
 ### Result
 Please see the swagger endpoint or application url to view a list of people who are listed as either living in London, or whose current coordinates are within 50 miles of London.
@@ -54,9 +54,10 @@ Please see the swagger endpoint or application url to view a list of people who 
     "longitude": 111.3479498,
     "city": "London"
   },
+  .....
 ```
 
 License
 ----
 
-MIT
+`This application is distributed under the` [Apache 2.0 license.](https://www.apache.org/licenses/LICENSE-2.0.html)
